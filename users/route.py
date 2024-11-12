@@ -24,14 +24,16 @@ def get_user(user_id):
 @users_bp.route("/users", methods=["POST"])
 def create_user():
     data = request.get_json()
-    user = user_service.create_user(data["username"], data["email"])
+    user = user_service.create_user(data["username"], data["email"], data["password"])
     return make_response(jsonify(data=user.to_dict()), 201)
 
 
 @users_bp.route("/users/<int:user_id>", methods=["PUT"])
 def update_user(user_id):
     data = request.get_json()
-    user = user_service.update_user(user_id, data.get("username"), data.get("email"))
+    user = user_service.update_user(
+        user_id, data.get("username"), data.get("email"), data.get("password")
+    )
     if user:
         return make_response(jsonify(data=user.to_dict()), 200)
     else:
