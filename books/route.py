@@ -1,28 +1,13 @@
-from flask import Blueprint, make_response, jsonify
-from .controller import BooksController
+from flask import Blueprint, make_response, jsonify, request
+from books.service import BookService
+from books.repository import BookRepository
 
 
-books_bp = Blueprint('books', __name__)
-books_controller = BooksController()
-@books_bp.route('/', methods=['GET'])
-def index():
-    """ Example endpoint with simple greeting.
-    ---
-    tags:
-      - Example API
-    responses:
-      200:
-        description: A simple greeting
-        schema:
-          type: object
-          properties:
-            data:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: "Hello World!"
-    """
-    result=books_controller.index()
-    return make_response(jsonify(data=result))
-      
+books_bp = Blueprint("/books", __name__)
+book_service = BookService(BookRepository())
+
+
+@books_bp.route("/books", methods=["GET"])
+def get_all_books():
+    books = book_service.get_all_books()
+    return make_response(jsonify(data=[book.to_dict() for book in books]))
