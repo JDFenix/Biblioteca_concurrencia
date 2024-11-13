@@ -18,7 +18,7 @@ def login():
             login_user(user)
             return redirect(url_for("books_views.home"))
         else:
-            flash("Invalid credentials", "danger")
+            return render_template("login.html", error="Invalid username or password")
 
     return render_template("login.html")
 
