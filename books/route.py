@@ -1,5 +1,14 @@
 # books/routes.py
-from flask import Blueprint, make_response, jsonify, request, render_template
+from flask import (
+    Blueprint,
+    make_response,
+    jsonify,
+    request,
+    render_template,
+    redirect,
+    url_for,
+)
+from flask_login import login_required
 from sqlalchemy.orm import joinedload
 from books.service import BookService
 from books.repository import BookRepository
@@ -58,6 +67,7 @@ def delete_book(book_id):
 
 
 @books_views_bp.route("/home")
+@login_required
 def home():
     all_books = Book.query.options(joinedload(Book.author)).limit(8).all()
     books_with_authors = []

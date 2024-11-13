@@ -1,11 +1,16 @@
 from users.model import db, User
+from extensions import bcrypt
 
 
 class UserRepository:
 
     @staticmethod
-    def add_user(username, email, password):  # Incluye el parámetro password
-        new_user = User(username=username, email=email, password=password)
+    def add_user(username, email, password):
+        password_str = str(password)
+        password_hash = bcrypt.generate_password_hash(
+            password_str.encode("utf-8")
+        ).decode("utf-8")
+        new_user = User(username=username, email=email, password=password_hash)
         db.session.add(new_user)
         db.session.commit()
         return new_user
