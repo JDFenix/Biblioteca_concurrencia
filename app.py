@@ -1,6 +1,7 @@
 from flask import Flask
 from users.route import users_bp
 from books.route import books_bp
+from books.route import books_views_bp
 from lendings.route import lendings_bp
 from authors.route import authors_bp
 from returns.route import returns_bp
@@ -15,7 +16,10 @@ db.init_app(app)
 
 
 app.register_blueprint(users_bp, url_prefix="/api")
+
 app.register_blueprint(books_bp, url_prefix="/api")
+app.register_blueprint(books_views_bp, url_prefix="/books")
+
 app.register_blueprint(lendings_bp, url_prefix="/api")
 app.register_blueprint(authors_bp, url_prefix="/api")
 app.register_blueprint(returns_bp, url_prefix="/api")

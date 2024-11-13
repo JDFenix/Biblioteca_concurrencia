@@ -8,6 +8,7 @@ class Author(db.Model):
     first_name = db.Column(db.String(80), nullable=False)
     last_name = db.Column(db.String(80), nullable=False)
     birth_year = db.Column(db.Integer, nullable=True)
+    books = db.relationship("Book", backref="author", lazy=True)
 
     def __init__(self, first_name, last_name, birth_year) -> None:
         self.first_name = first_name

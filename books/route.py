@@ -1,9 +1,14 @@
 # books/routes.py
-from flask import Blueprint, make_response, jsonify, request
+from flask import Blueprint, make_response, jsonify, request, render_template
+from sqlalchemy.orm import joinedload
 from books.service import BookService
 from books.repository import BookRepository
+from authors.model import Author
+from books.model import Book
 
 books_bp = Blueprint("books", __name__)
+books_views_bp = Blueprint("books_views", __name__, template_folder="templates")
+
 book_service = BookService(BookRepository())
 
 
@@ -50,3 +55,14 @@ def delete_book(book_id):
     if deleted_book:
         return make_response(jsonify({"message": "Book deleted"}))
     return make_response(jsonify({"error": "Book not found"}), 404)
+
+
+@books_views_bp.route("/home")
+def home():
+    all_books = Book.query.options(joinedload(Book.author)).limit(8).all()
+    books_with_authors = []
+    for book in all_books:
+        author = Author.query.get(book.author_id)
+        books_with_authors.append({"book": book, "author": author})
+        print(book.name)
+    return render_template("home.html", books=books_with_authors)
