@@ -74,5 +74,4 @@ def home():
     for book in all_books:
         author = Author.query.get(book.author_id)
         books_with_authors.append({"book": book, "author": author})
-        print(book.name)
     return render_template("home.html", books=books_with_authors)

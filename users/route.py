@@ -3,6 +3,8 @@ from users.service import UserService
 from users.repository import UserRepository
 
 users_bp = Blueprint("users", __name__)
+users_views_bp = Blueprint("users_views", __name__, template_folder="templates")
+
 user_service = UserService(UserRepository())
 
 
@@ -47,3 +49,7 @@ def delete_user(user_id):
         return make_response(jsonify(message="User deleted"), 200)
     else:
         return make_response(jsonify(message="User not found"), 404)
+
+
+# @users_views_bp.route("/register", methods=["POST"])
+# def register_user():
